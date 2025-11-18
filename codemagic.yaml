@@ -9,7 +9,7 @@ workflows:
           flutter pub get
       - name: Build debug APK
         script: |
-          flutter build apk --debug
+          flutter build apk --debug --split-per-abi
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
     publishing:
