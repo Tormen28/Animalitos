@@ -1,0 +1,15 @@
+# Configuración de la función de borde
+[functions.scraper]
+  name = "scraper"
+  description = "Función para realizar scraping de resultados de lotería"
+  verify_jwt = false  # Deshabilitar JWT ya que usamos un token personalizado
+  max_duration = 120  # Segundos máximos de ejecución
+  
+  # Variables de entorno
+  [functions.scraper.env]
+    SUPABASE_URL = ""
+    SUPABASE_SERVICE_ROLE_KEY = ""
+    CRON_SECRET = "tu_token_secreto_aqui"  # Cambiar por un token seguro
+    
+    # Configuración de notificaciones (opcional)
+    FCM_SERVER_KEY = ""  # Si usas Firebase Cloud Messaging

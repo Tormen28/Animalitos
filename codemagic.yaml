@@ -1,0 +1,18 @@
+workflows:
+  android-debug:
+    name: Android Debug APK
+    environment:
+      flutter: 3.24.0
+    scripts:
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Build debug APK
+        script: |
+          flutter build apk --debug --split-per-abi
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+    publishing:
+      email:
+        recipients:
+          - enriqueyepez28@gmail.com
