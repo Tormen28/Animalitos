@@ -2,7 +2,7 @@ workflows:
   android-debug:
     name: Android Debug APK
     environment:
-      flutter: 3.24.0
+      flutter: 3.27.0
     scripts:
       - name: Get Flutter dependencies
         script: |
@@ -20,7 +20,7 @@ workflows:
   android-release:
     name: Android Release APK
     environment:
-      flutter: 3.24.0
+      flutter: 3.27.0
       groups:
         - keystore_credentials
     scripts:
