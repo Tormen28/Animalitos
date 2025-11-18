@@ -188,29 +188,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    if (_sorteos.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.event_busy, size: 60, color: Colors.grey),
-            const SizedBox(height: 16),
-            const Text(
-              'No hay sorteos activos en este momento',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            TextButton.icon(
-              onPressed: _refrescar,
-              icon: const Icon(Icons.refresh),
-              label: const Text('Actualizar'),
-            ),
-          ],
-        ),
-      );
-    }
-
     return RefreshIndicator(
       onRefresh: _refrescar,
       child: SingleChildScrollView(
@@ -482,11 +459,14 @@ class _HomeScreenState extends State<HomeScreen> {
       return const SizedBox.shrink();
     }
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth > 600 ? 3 : screenWidth > 400 ? 2 : 1;
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3, // 3 columnas para mostrar más resultados
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
         childAspectRatio: 0.8, // Relación de aspecto más alta para cards cuadradas
@@ -510,6 +490,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     final fechaSorteo = DateTime.parse(resultado['fecha_sorteo'] as String);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final imageSize = screenWidth > 600 ? 225.0 : screenWidth > 400 ? 150.0 : 100.0;
 
     return Card(
       elevation: 4,
@@ -517,7 +499,7 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Container(
-        padding: const EdgeInsets.all(12.0), // Padding original
+        padding: EdgeInsets.all(screenWidth > 600 ? 12.0 : screenWidth > 400 ? 8.0 : 6.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
           gradient: const LinearGradient(
@@ -532,10 +514,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Imagen del animalito - tamaño original para 3 columnas
+            // Imagen del animalito - tamaño responsivo
             Container(
-              width: 225,
-              height: 225,
+              width: imageSize,
+              height: imageSize,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: const Color(0xFFFFD700), width: 3), // Borde más grueso
@@ -550,8 +532,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Center(
                       child: Text(
                         animalito['numero_str']?.toString() ?? '00',
-                        style: const TextStyle(
-                          fontSize: 48, // Tamaño más pequeño
+                        style: TextStyle(
+                          fontSize: imageSize * 0.2, // Tamaño proporcional
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
                         ),
@@ -566,8 +548,8 @@ class _HomeScreenState extends State<HomeScreen> {
             // Información del sorteo con HORA REAL del sorteo (ej: Tarde 3:00 PM)
             Text(
               '${sorteo['nombre_sorteo'] ?? 'Sorteo'} ${DateFormat('h:mm a').format(DateTime.parse(sorteo['hora_cierre'] ?? fechaSorteo.toIso8601String()))}',
-              style: const TextStyle(
-                fontSize: 12,
+              style: TextStyle(
+                fontSize: screenWidth > 600 ? 12 : screenWidth > 400 ? 10 : 8,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -577,10 +559,10 @@ class _HomeScreenState extends State<HomeScreen> {
             // Número y nombre del animalito
             Text(
               '${animalito['numero_str'] ?? '00'} - ${animalito['nombre'] ?? 'Animalito'}',
-              style: const TextStyle(
-                fontSize: 14,
+              style: TextStyle(
+                fontSize: screenWidth > 600 ? 14 : screenWidth > 400 ? 12 : 10,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFFFFD700), // Dorado
+                color: const Color(0xFFFFD700), // Dorado
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -593,24 +575,24 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   DateFormat('dd/MM/yyyy').format(fechaSorteo),
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Color(0xFFB0B0B0),
+                  style: TextStyle(
+                    fontSize: screenWidth > 600 ? 10 : screenWidth > 400 ? 9 : 8,
+                    color: const Color(0xFFB0B0B0),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth > 600 ? 4 : 2, vertical: 1),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFFD700).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(color: const Color(0xFFFFD700), width: 1),
                   ),
-                  child: const Text(
+                  child: Text(
                     'FINALIZADO',
                     style: TextStyle(
-                      color: Color(0xFFFFD700),
-                      fontSize: 8,
+                      color: const Color(0xFFFFD700),
+                      fontSize: screenWidth > 600 ? 8 : screenWidth > 400 ? 7 : 6,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

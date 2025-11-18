@@ -157,16 +157,20 @@ class _SorteosScreenState extends State<SorteosScreen> {
       });
     }
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth > 600 ? 3 : screenWidth > 400 ? 2 : 1;
+    final imageSize = (screenWidth > 600 ? 180.0 : screenWidth > 400 ? 120.0 : 80.0) * 1.3;
+
     final animalSeleccionado = await showDialog<Map<String, dynamic>>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('🎯 Seleccionar Animal Ganador'),
         content: SizedBox(
           width: double.maxFinite,
-          height: 400,
+          height: screenWidth > 600 ? 500 : 400,
           child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, // 3 columnas para mejor visibilidad
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
             ),
@@ -178,16 +182,16 @@ class _SorteosScreenState extends State<SorteosScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF006400), // Verde esmeralda
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.all(6), // Padding reducido
+                  padding: const EdgeInsets.all(4), // Padding reducido
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Imagen del animalito - 245x245 píxeles
+                    // Imagen del animalito - tamaño responsivo
                     Container(
-                      width: 245, // Tamaño fijo de 245 píxeles
-                      height: 245, // Tamaño fijo de 245 píxeles
-                      margin: const EdgeInsets.only(bottom: 4), // Margen reducido
+                      width: imageSize,
+                      height: imageSize,
+                      margin: const EdgeInsets.only(bottom: 4),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: const Color(0xFFFFD700), width: 2), // Borde dorado
@@ -202,8 +206,8 @@ class _SorteosScreenState extends State<SorteosScreen> {
                             return Center(
                               child: Text(
                                 animal['nombre'][0].toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 72, // Tamaño de fuente aumentado proporcionalmente
+                                style: TextStyle(
+                                  fontSize: imageSize * 0.3, // Tamaño proporcional
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
@@ -213,24 +217,24 @@ class _SorteosScreenState extends State<SorteosScreen> {
                         ),
                       ),
                     ),
-                    // Texto más pequeño para que la imagen ocupe más espacio
+                    // Texto responsivo
                     Text(
                       animal['numero'],
-                      style: const TextStyle(
-                        fontSize: 12, // Reducido para que imagen ocupe más
+                      style: TextStyle(
+                        fontSize: screenWidth > 600 ? 12 : 10,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFFFFD700), // Dorado
+                        color: const Color(0xFFFFD700), // Dorado
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       animal['nombre'],
-                      style: const TextStyle(
-                        fontSize: 10, // Reducido para que imagen ocupe más
+                      style: TextStyle(
+                        fontSize: screenWidth > 600 ? 10 : 8,
                         fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
-                      maxLines: 1, // Una sola línea
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],

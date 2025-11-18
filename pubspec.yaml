@@ -1,5 +1,5 @@
 name: animalitos_lottery
-description: Aplicación de lotería de Animalitos con Flutter y Supabase
+description: Animalitos Lottery - Aplicación de lotería con Flutter y Supabase
 version: 1.0.0+1
 
 publish_to: 'none'
@@ -32,8 +32,9 @@ dependencies:
   # UI Components
   google_fonts: ^6.1.0
   flutter_svg: ^2.0.10+1
-  intl: ^0.19.0
-  
+  intl: ^0.20.2
+  device_preview: ^1.1.0
+
   # Form Validation
   form_validator: ^2.1.0
   

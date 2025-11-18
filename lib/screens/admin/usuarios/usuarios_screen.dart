@@ -297,30 +297,62 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
 
   Future<Map<String, dynamic>> _cargarEstadisticasUsuario(String userId) async {
     try {
+      debugPrint('📊 Iniciando carga de estadísticas para usuario $userId');
+
       // Obtener apuestas del usuario
-      final apuestas = await Supabase.instance.client
-          .from('apuestas')
-          .select('estado, monto_apostado')
-          .eq('user_id', userId);
+      late final apuestasResponse;
+      try {
+        apuestasResponse = await Supabase.instance.client
+            .from('apuestas')
+            .select('estado, monto_apostado')
+            .eq('user_id', userId);
+        debugPrint('📊 Query successful, response type: ${apuestasResponse.runtimeType}');
+      } catch (e) {
+        debugPrint('📊 Query failed: $e');
+        rethrow;
+      }
+
+      final apuestas = List<Map<String, dynamic>>.from(apuestasResponse.where((item) => item != null));
+      debugPrint('📊 apuestasResponse type: ${apuestasResponse.runtimeType}');
+      debugPrint('📊 apuestasResponse: $apuestasResponse');
+      debugPrint('📊 apuestas length: ${apuestas.length}');
+      debugPrint('📊 Apuestas obtenidas: ${apuestas.length}');
 
       double totalApostado = 0.0;
       int apuestasGanadas = 0;
       int apuestasPerdidas = 0;
 
-      for (final apuesta in apuestas) {
-        final monto = (apuesta['monto_apostado'] as num?)?.toDouble() ?? 0.0;
-        totalApostado += monto;
+      for (int i = 0; i < apuestas.length; i++) {
+        final apuesta = apuestas[i];
+        debugPrint('📊 Procesando apuesta $i: $apuesta');
 
-        final estado = apuesta['estado'] as String?;
-        if (estado == 'ganada') {
-          apuestasGanadas++;
-        } else if (estado == 'perdida') {
-          apuestasPerdidas++;
+        try {
+          final monto = double.tryParse(apuesta['monto_apostado'].toString()) ?? 0.0;
+          debugPrint('📊 Monto parseado: $monto');
+          totalApostado += monto;
+        } catch (e) {
+          debugPrint('❌ Error al parsear monto: $e, valor: ${apuesta['monto_apostado']}');
+          rethrow;
+        }
+
+        try {
+          final estado = apuesta['estado'];
+          debugPrint('📊 Estado: $estado (tipo: ${estado.runtimeType})');
+          if (estado == 'ganada' || estado == 1) {
+            apuestasGanadas++;
+          } else if (estado == 'perdida' || estado == 2) {
+            apuestasPerdidas++;
+          }
+        } catch (e) {
+          debugPrint('❌ Error al procesar estado: $e, valor: ${apuesta['estado']}');
+          rethrow;
         }
       }
 
       final totalApuestas = apuestasGanadas + apuestasPerdidas;
       final ratioGanancia = totalApuestas > 0 ? (apuestasGanadas / totalApuestas) * 100 : 0.0;
+
+      debugPrint('📊 Estadísticas calculadas: totalApostado=$totalApostado, ganadas=$apuestasGanadas, perdidas=$apuestasPerdidas, ratio=$ratioGanancia');
 
       return {
         'total_apostado': totalApostado,
@@ -329,7 +361,8 @@ class _UsuariosScreenState extends State<UsuariosScreen> {
         'ratio_ganancia': ratioGanancia,
       };
     } catch (e) {
-      debugPrint('Error al cargar estadísticas del usuario $userId: $e');
+      debugPrint('❌ Error al cargar estadísticas del usuario $userId: $e');
+      debugPrint('❌ Stack trace: ${StackTrace.current}');
       rethrow;
     }
   }

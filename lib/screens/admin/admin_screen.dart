@@ -347,14 +347,14 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
                   ),
                 )
               : SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 16.0 : 8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildStatsGrid(),
-                      const SizedBox(height: 24),
+                      SizedBox(height: MediaQuery.of(context).size.width > 600 ? 24 : 16),
                       _buildAnimalMasApostado(),
-                      const SizedBox(height: 24),
+                      SizedBox(height: MediaQuery.of(context).size.width > 600 ? 24 : 16),
                       _buildUltimasTransaccionesSinEmail(),
                     ],
                   ),
@@ -390,7 +390,7 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
         GridView.count(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
+          crossAxisCount: MediaQuery.of(context).size.width > 600 ? 2 : 1,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           children: [
@@ -431,7 +431,7 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
             borderRadius: BorderRadius.circular(16),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 20.0 : 12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -507,7 +507,7 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width > 600 ? 8.0 : 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -552,34 +552,34 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 20.0 : 12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 12 : 8),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, size: 32, color: color),
+                child: Icon(icon, size: MediaQuery.of(context).size.width > 600 ? 32 : 24, color: color),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: MediaQuery.of(context).size.width > 600 ? 12 : 8),
               Text(
                 value.toString(),
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: MediaQuery.of(context).size.width > 600 ? 28 : 24,
                   fontWeight: FontWeight.bold,
                   color: color == const Color(0xFFFFD700) ? color : Colors.white, // Dorado mantiene su color
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: MediaQuery.of(context).size.width > 600 ? 8 : 6),
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Color(0xFFB0B0B0), // Gris claro
-                  fontSize: 14,
+                style: TextStyle(
+                  color: const Color(0xFFB0B0B0), // Gris claro
+                  fontSize: MediaQuery.of(context).size.width > 600 ? 14 : 12,
                 ),
               ),
             ],

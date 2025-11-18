@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 
 // Configuración
 import 'config/supabase_config.dart';
@@ -55,8 +57,11 @@ Future<void> main() async {
 
     // Iniciar la app normalmente
     runApp(
-      ProviderScope(
-        child: const MyApp(),
+      DevicePreview(
+        enabled: !kReleaseMode,
+        builder: (context) => ProviderScope(
+          child: const MyApp(),
+        ),
       ),
     );
   } catch (e, stackTrace) {

@@ -124,7 +124,11 @@ class AdminService extends BaseService {
       }
 
       final animalesMasApostados = animalesMap.values.toList()
-        ..sort((a, b) => (b['total_apuestas'] as int).compareTo(a['total_apuestas'] as int));
+        ..sort((a, b) {
+          final aVal = (a['total_apuestas'] as num?)?.toInt() ?? 0;
+          final bVal = (b['total_apuestas'] as num?)?.toInt() ?? 0;
+          return bVal.compareTo(aVal);
+        });
 
       debugPrint('🐾 Animales más apostados: ${animalesMasApostados.length}');
 
