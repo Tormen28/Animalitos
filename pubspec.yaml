@@ -23,7 +23,7 @@ dependencies:
   postgrest: ^2.5.0
   
   # Notifications
-  flutter_local_notifications: ^16.3.2
+  flutter_local_notifications: ^17.0.0
   shared_preferences: ^2.2.2
   
   # Navigation
