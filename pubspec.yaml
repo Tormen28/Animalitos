@@ -51,7 +51,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   
   # Charts
-  fl_chart: 1.0.0
+  fl_chart: 0.66.0
   
   # Image Picker
   image_picker: ^1.0.7
